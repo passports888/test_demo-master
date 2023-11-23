@@ -1,0 +1,524 @@
+<script src="../static/vendor/jquery/jquery.js"></script>
+<script src="../static/vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
+
+
+<!-- Additional Scripts -->
+<script src="../static/assets/js/custom.js"></script>
+<script src="../static/assets/js/owl.js"></script>
+
+
+
+<!-- Additional CSS Files -->
+<!-- <link rel="stylesheet" href="assets/css/tooplate-main.css"> -->
+
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+
+
+
+<!-- 收集使用者input的age,回傳到伺服器,產生index選項-->
+<script>
+    // 在这里执行您的 JavaScript 代码
+    async function indexOptions() {
+        const age_input = document.getElementById("age_input").value;
+        const indexMenu = document.getElementById("indexMenu");
+
+        // 向Flask後端發送POST请求，傳遞使用者输入
+        const response = await fetch('/get_index', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({ 'age_input': age_input })
+        });
+
+        if (response.ok) {
+            const data = await response.json();
+            const options = data.options;
+
+            // 清空下拉選單
+            indexMenu.innerHTML = "";
+
+            // 創建一個默認選項,預防使用者選擇第一個選項時,無法觸發change事件
+            const defaultOption = document.createElement("option");
+            // 設定默認選項為空
+            defaultOption.value = "";
+            // 設定默認選項顯示的內容
+            defaultOption.textContent = "請選擇一個選項";
+            // 將默認選項添加到下拉選單的最前面
+            indexMenu.insertBefore(defaultOption, indexMenu.firstChild);
+
+            // 添加選項
+            options.forEach(option => {
+                const optionElement = document.createElement("option");
+                optionElement.value = option;
+                optionElement.textContent = option;
+                indexMenu.appendChild(optionElement);
+            });
+
+
+        }
+    }
+    // 監聽使用者輸入年紀按下"Enter"時觸發
+    document.getElementById("age_input").addEventListener("keyup", function (event) {
+        if (event.key == "Enter") {
+            const ageInput = document.getElementById("age_input")
+            const ageValue = parseInt(ageInput.value,10)
+            if (isNaN(ageValue) || ageValue !== parseFloat(ageInput.value)) {
+                alert("請輸入整數")
+            }else if(ageValue < 16){
+                alert("年齡輸入下限為16歲")
+            }else if (ageValue > 99){
+                alert("年齡輸入上限為99歲")
+            }else{
+                indexOptions();
+            }
+        }
+    });
+    
+    // 設定input提示字樣
+    document.getElementById("age_input").addEventListener("focus", function () {
+        document.getElementById("age_input").placeholder = "";
+    });
+
+    document.getElementById("age_input").addEventListener("blur", function () {
+        document.getElementById("age_input").placeholder = "輸入年紀後按Enter";
+    });
+
+
+</script>
+
+<!-- 根據選擇的index選項,產生group選項 -->
+<script>
+    // 在这里执行您的 JavaScript 代码
+    async function groupOptions() {
+        const indexMenu = document.getElementById("indexMenu").value;
+        const groupMenu = document.getElementById("groupMenu");
+
+        // 向Flask後端發送POST请求，傳遞使用者输入
+        const response = await fetch('/get_group', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({ 'indexMenu': indexMenu })
+        });
+
+        if (response.ok) {
+            const data = await response.json();
+            const options = data.options;
+
+            // 清空下拉選單
+            groupMenu.innerHTML = "";
+            // 創建一個默認選項,預防使用者選擇第一個選項時,無法觸發change事件
+            const defaultOption = document.createElement("option");
+            // 設定默認選項為空
+            defaultOption.value = "";
+            // 設定默認選項顯示的內容
+            defaultOption.textContent = "請選擇一個選項";
+            // 將默認選項添加到下拉選單的最前面
+            groupMenu.insertBefore(defaultOption, groupMenu.firstChild);
+
+            const noneOption = document.createElement('option');
+            noneOption.value = 'None';
+            noneOption.text = 'Don\'t want to choose';
+            groupMenu.appendChild(noneOption);
+
+            // 添加選項
+            options.forEach(option => {
+                const optionElement = document.createElement("option");
+                optionElement.value = option;
+                optionElement.textContent = option;
+                groupMenu.appendChild(optionElement);
+            });
+
+
+        }
+    }
+    // 監聽使用者改變indexMenu時觸發
+    document.getElementById("indexMenu").addEventListener("change", groupOptions
+    );
+
+
+</script>
+
+<!-- 根據選擇的group選項,產生type option -->
+<script>
+    // 在这里执行您的 JavaScript 代码
+    async function typeOptions() {
+        const groupMenu = document.getElementById("groupMenu").value;
+        const typeMenu = document.getElementById("typeMenu");
+
+        // 向Flask後端發送POST请求，傳遞使用者输入
+        const response = await fetch('/get_type', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({ 'groupMenu': groupMenu })
+        });
+
+        if (response.ok) {
+            const data = await response.json();
+            const options = data.options;
+
+            // 清空下拉選單
+            typeMenu.innerHTML = "";
+            // 創建一個默認選項,預防使用者選擇第一個選項時,無法觸發change事件
+            const defaultOption = document.createElement("option");
+            // 設定默認選項為空
+            defaultOption.value = "";
+            // 設定默認選項顯示的內容
+            defaultOption.textContent = "請選擇一個選項";
+            // 將默認選項添加到下拉選單的最前面
+            typeMenu.insertBefore(defaultOption, typeMenu.firstChild);
+
+            const noneOption = document.createElement('option');
+            noneOption.value = 'None';
+            noneOption.text = 'Don\'t want to choose';
+            typeMenu.appendChild(noneOption);
+
+
+            // 添加選項
+            options.forEach(option => {
+                const optionElement = document.createElement("option");
+                optionElement.value = option;
+                optionElement.textContent = option;
+                typeMenu.appendChild(optionElement);
+            });
+        }
+    }
+    // 監聽使用者改變groupMenu時觸發
+    document.getElementById("groupMenu").addEventListener("change", typeOptions);
+
+</script>
+
+
+<!-- 將選擇的type和輸入的color一起傳送到後端 -->
+<script>
+
+    // 在这里执行您的 JavaScript 代码
+    typeSelect = ""
+    color_input = ""
+
+    // 监听select元素的change事件
+    document.getElementById('typeMenu').addEventListener('change', function () {
+        typeSelect = document.getElementById('typeMenu').value
+    });
+
+    // 监听input元素的keyup事件
+    document.getElementById('color_input').addEventListener('keyup', function (event) {
+        if (event.key === 'Enter') {
+            color_input = document.getElementById('color_input').value
+            if (typeSelect !== "") {
+                send_Type_Color(); // 调用表单提交函数
+            }
+        }
+    });
+
+    function send_Type_Color() {
+        // 创建一个隐藏的表单元素
+        var form = document.createElement('form');
+        form.action = "/"; // 指定服务器端的路由
+        form.method = "POST"; // 使用POST方法提交
+
+        // 创建两个隐藏的输入字段，分别用于存储select和input的值
+        var typeInput = document.createElement('input');
+        typeInput.type = 'hidden';
+        typeInput.name = 'typeSelect';
+        typeInput.value = typeSelect;
+
+        var colorInput = document.createElement('input');
+        colorInput.type = 'hidden';
+        colorInput.name = 'color_input';
+        colorInput.value = color_input;
+
+        // 将输入字段添加到表单中
+        form.appendChild(typeInput);
+        form.appendChild(colorInput);
+
+        // 将表单添加到页面中并模拟提交
+        document.body.appendChild(form);
+        form.submit();
+    }
+
+</script>
+
+
+<!--設定小螢幕時的age下拉選單,默認選項為第一個選項-->
+<script>
+    document.addEventListener("DOMContentLoaded", function() {
+        const ageSelect = document.getElementById("ageSelect");
+        ageSelect.selectedIndex = 0;
+    });
+</script>
+
+<!--根據小螢幕時的age下拉選單選擇,回傳到伺服器,產生index選項-->
+<script>
+    if (window.innerWidth <= 767) {
+
+        async function ageSelect() {
+        const ageSelect = document.getElementById("ageSelect").value;
+        const indexMenu = document.getElementById("indexMenu");
+
+        // 向Flask後端發送POST请求，傳遞使用者输入
+        const response = await fetch('/get_index', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({ 'age_input': ageSelect })
+        });
+
+        if (response.ok) {
+            const data = await response.json();
+            const options = data.options;
+
+            // 清空下拉選單
+            indexMenu.innerHTML = "";
+
+            // 創建一個默認選項,預防使用者選擇第一個選項時,無法觸發change事件
+            const defaultOption = document.createElement("option");
+            // 設定默認選項為空
+            defaultOption.value = "";
+            // 設定默認選項顯示的內容
+            defaultOption.textContent = "請選擇一個選項";
+            // 將默認選項添加到下拉選單的最前面
+            indexMenu.insertBefore(defaultOption, indexMenu.firstChild);
+
+            // 添加選項
+            options.forEach(option => {
+                const optionElement = document.createElement("option");
+                optionElement.value = option;
+                optionElement.textContent = option;
+                indexMenu.appendChild(optionElement);
+            });
+
+
+        }
+    }
+     // 監聽使用者改變ageSelect時觸發
+     document.getElementById("ageSelect").addEventListener("change", ageSelect
+    );
+
+    }
+</script>
+
+<script>
+
+if (window.innerWidth <= 767) {
+
+    async function colorSelect() {
+        const typeMenu = document.getElementById("typeMenu").value;
+        const colorSelect = document.getElementById("colorSelect");
+
+        // 向Flask後端發送POST请求，傳遞使用者输入
+        const response = await fetch('/get_color', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({ 'typeMenu': typeMenu })
+        });
+
+        if (response.ok) {
+            const data = await response.json();
+            const options = data.options;
+
+            // 添加選項
+            options.forEach(option => {
+                const optionElement = document.createElement("option");
+                optionElement.value = option;
+                optionElement.textContent = option;
+                colorSelect.appendChild(optionElement);
+            });
+
+
+        }
+    }
+     // 監聽使用者改變ageSelect時觸發
+     document.getElementById("typeMenu").addEventListener("change", colorSelect
+    );
+
+}
+
+</script>
+
+<script>
+    if (window.innerWidth <= 767) {
+
+    // 監聽使用者改變colorSelect時觸發
+    document.getElementById("colorSelect").addEventListener("change",  sendColor
+    );
+
+    function sendColor() {
+        const colorSelect = document.getElementById("colorSelect").value;
+        // 创建一个隐藏的表单元素
+        var form = document.createElement('form');
+        form.action = "/"; // 指定服务器端的路由
+        form.method = "POST"; // 使用POST方法提交
+
+        // 創建隐藏的输入字段，用於儲存color下拉選單的值
+        var colorInput = document.createElement('input');
+        colorInput.type = 'hidden';
+        colorInput.name = 'color_input';
+        colorInput.value = colorSelect;
+
+        // 将输入字段添加到表单中
+        form.appendChild(colorInput);
+
+        // 将表单添加到页面中并模拟提交
+        document.body.appendChild(form);
+        form.submit();
+    }
+    }
+    
+</script>
+
+
+<!-- 將選擇的圖片id傳送到後端伺服器 -->
+<script>
+    function sendId(itemId) {
+        // 創建一個隱藏的表單元素
+        var form = $('<form action="/test" method="POST"></form>');
+        // 創建一個隱藏的輸入，將數據放入
+        var input = $('<input type="hidden" name="itemId" value="' + itemId + '">');
+        // 將輸入添加到表單中
+        form.append(input);
+        // 將表單添加到頁面中並模擬提交
+        form.appendTo('body').submit();
+    }
+</script>
+
+<!-- 加到最愛 -->
+
+<script>
+    function myfavorite(id,  name, color, type) {
+        addToCart(id,  name, color, type)
+        // 使用Ajax发送POST请求
+        $.ajax({
+            type: "POST",
+            url: "/add_to_favorite",
+            data: { item_id: id },
+            success: function (response) {
+                // 在成功响应时执行的操作
+                alert("商品已添加到購物車！");
+            },
+            error: function (error) {
+                // 在发生错误时执行的操作
+                alert("請先登入或註冊會員：" + error);
+            }
+        });
+    }
+</script>
+
+<script>
+    function addToCart(id,  name, color, type) {
+        fetch('/add_to_cart', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({
+            id: id,
+            name: name,
+            color: color,
+            type: type,
+            quantity: 1  // 将 quantity 设置为 1
+        })
+        })
+            .then(response => response.json())
+            .then(data => {
+                // 更新购物车图标上的徽章和下拉菜单中的商品列表
+                updateCartBadge(data.totalItems);
+                updateCartDropdown(data.cartItems);
+            })
+            .catch(error => {
+                console.error('Error:', error);
+            });
+    }
+
+    function updateCartBadge(totalItems) {
+        // 更新购物车图标上的徽章
+        const badge = document.querySelector('.badge');
+        badge.textContent = totalItems;
+    }
+
+    function updateCartDropdown(cartItems) {
+        // 更新下拉菜单中的商品列表
+        const table = document.querySelector('.table tbody');
+        table.innerHTML = ''; // 清空原有内容
+        cartItems.forEach(item => {
+            const row = document.createElement('tr');
+            row.innerHTML = `
+            <td><a href="#"><i class="fas fa-trash-alt"></i></a></td>
+            <td>${item.name}</td>
+            <td>${item.type}</td>
+            <td>${item.color}</td>
+            <td>${item.quantity}</td>
+            <td><button class="btn btn-custom" onclick="removeItem('${item.id}')">刪除
+                 <i class="fas fa-trash-alt"></i></button></td>
+        `;
+            table.appendChild(row);
+        });
+    }
+</script>
+
+<script>
+    function removeItem(itemId) {
+    fetch('/remove', {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({ itemId })
+    })
+    .then(response => response.json())
+    .then(data => {
+        // 更新购物车图标上的徽章和下拉菜单中的商品列表
+        updateCartBadge(data.totalItems);
+        updateCartDropdown(data.cartItems);
+    })
+    .catch(error => {
+        console.error('Error:', error);
+    });
+}
+
+</script>
+
+<script>
+    function checkout() {
+    fetch('/checkout', {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({})
+    })
+    .then(data => {
+        // 更新购物车图标上的徽章和下拉菜单中的商品列表
+        updateCartBadge(data.totalItems);
+        updateCartDropdown(data.cartItems);
+        alert("結帳完成!");
+    })
+}
+</script>
+
+
+<script>
+    // 業面加載時清空輸入框,將輸入框設置為空
+    function clearUserInput() {
+        var age_input = document.getElementById("age_input");
+        age_input.value = "";
+
+        var color_input = document.getElementById("color_input");
+        color_input.value = "";
+
+    }
+</script>
+
+<script>
+window.addEventListener('load', function() {
+    clearUserInput()
+});
+
+</script>

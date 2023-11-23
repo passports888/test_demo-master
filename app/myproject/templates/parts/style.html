@@ -1,0 +1,142 @@
+<link href="../static/vendor/bootstrap/css/bootstrap.min.css" rel="stylesheet">
+
+<link rel="stylesheet" href="../static/assets/css/owl.css">
+
+<style>
+    /* Content container */
+    .content {
+        flex: 1;
+        padding-bottom: 60px;
+        padding: 0;
+
+        /* Allow content to stretch and push footer to bottom */
+    }
+
+    .clearfix {
+        clear: both;
+    }
+
+    .section-heading {
+        margin-top: 80px;
+        margin-bottom: 40px;
+    }
+
+    .section-heading .line-dec {
+        width: 30px;
+        height: 5px;
+        background-color: #3a8bcd;
+    }
+
+    .banner {
+        margin-top: 20px;
+        background-image: url("../static/html_img/background.png");
+        background-size: cover;
+        background-repeat: no-repeat;
+        padding: 100px; 
+        background-position: center center;
+        height: 800px;
+    }
+
+    .ispan-container {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+    }
+
+    .ispan {
+        margin-top: 20px;
+        max-width: 100%;
+        height: 70px;
+    }
+
+    .form-select {
+        margin-top: 15px;
+    }
+
+    /* 图片容器的样式 */
+    .image-container {
+        display: flex;
+        flex-wrap: wrap;
+        justify-content: center;
+        gap: 20px;
+        /* 商品之间的间距，根据需要调整 */
+        max-width: 1800px;
+        /* 最大宽度，根据需要调整 */
+        margin: 50px auto;
+        padding: 20px;
+    }
+
+    /* 图片项目的样式 */
+    .item {
+        width: calc(20% - 20px);
+        /* 顯示5個商品,並保持等距 */
+        margin: 0 0 20px 0;
+        padding: 20px;
+        background-color: #f0f0f0;
+        /* 背景颜色，根据需要调整 */
+        border: 5px solid #ddd;
+        border-radius: 10px;
+        /* 边框颜色和宽度，根据需要调整 */
+        text-align: center;
+    }
+
+    /* 圖片樣式 */
+    .item img {
+        max-width: 100%;
+        height: auto;
+        padding-bottom: 10%;
+        /* 保持图像容器的纵横比为1:1 */
+        position: relative;
+        overflow: hidden;
+    }
+
+    /* 适用于小屏幕设备的样式 */
+    @media (max-width: 768px) {
+        .image-container {
+            flex-direction: column;
+            /* 列表布局 */
+        }
+
+        .d-flex {
+            flex-direction: column;
+            margin: 20px;
+        }
+
+        .item {
+            width: 100%;
+            margin-bottom: 20px;
+        }
+    }
+
+    /*  設定第二個有關age和color的下拉選單,用於小螢幕觀看時可以用於顯現 */
+    @media (max-width: 767px) {
+        #age_block {
+            display: none; /* 小屏幕查看時,影藏age的輸入框 */
+        }
+        #color_block{
+            display: none;
+        }
+        #ageSelect {
+            display: block; /* 小屏幕查看時,顯示age的下拉選單 */
+        }
+        #colorSelect{
+            display: block;
+        }
+    }
+    /*  大螢幕瀏覽網站時影藏age和color的下拉選單可以用於影藏 */
+    @media (min-width: 767px) {
+        #ageSelect {
+            display: none; 
+        }
+        #colorSelect{
+            display: none;
+        }
+    }
+
+    @media (max-width: 768px) {
+        .banner {
+            width: 100%;
+            height: auto;
+        }
+    }
+</style>

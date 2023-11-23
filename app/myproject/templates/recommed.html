@@ -1,0 +1,186 @@
+{% include "parts/base.html" %}
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<style>
+    .content {
+        flex: 1;
+        padding-bottom: 60px;
+        margin: 10px;
+        padding: 0;
+        /* Allow content to stretch and push footer to bottom */
+    }
+
+    body {
+        background-color: antiquewhite;
+    }
+
+    /* 图片容器的样式 */
+    .image-container {
+        display: flex;
+        flex-wrap: wrap;
+        justify-content: space-between;
+        gap: 20px;
+        /* 商品之间的间距，根据需要调整 */
+        max-width: 1800px;
+        /* 最大宽度，根据需要调整 */
+        margin: 0 auto;
+    }
+
+    /* 图片项目的样式 */
+    .item {
+        width: calc(20% - 20px);
+        /* 顯示5個商品,並保持等距 */
+        margin: 0 0 20px 0;
+        padding: 20px;
+        background-color: #f0f0f0;
+        /* 背景颜色，根据需要调整 */
+        border: 1px solid #ddd;
+        /* 边框颜色和宽度，根据需要调整 */
+        text-align: center;
+    }
+
+    /* 圖片樣式 */
+    .item img {
+        max-width: 100%;
+        height: auto;
+        padding-bottom: 10%;
+        /* 保持图像容器的纵横比为1:1 */
+        position: relative;
+        overflow: hidden;
+    }
+
+    .one-container {
+        display: flex;
+        flex-wrap: wrap;
+        justify-content: center;
+        margin: auto;
+    }
+
+    .oneitem {
+        width: 500px;
+        margin: 0 auto;
+        padding: 20px;
+        background-color: #f0f0f0;
+        /* 背景颜色，根据需要调整 */
+        border: 1px solid #ddd;
+        border-radius: 10px;
+        /* 边框颜色和宽度，根据需要调整 */
+        text-align: center;
+    }
+
+    .oneitem img {
+        max-width: 100%;
+        max-height: 100%;
+    }
+
+    .featured-item h4 {
+        font-size: 17px;
+        font-weight: 700;
+        color: #1e1e1e;
+        margin-top: 15px;
+        transition: all 0.5s;
+    }
+
+    .featured-item:hover h4 {
+        color: #3a8bcd;
+    }
+
+    .featured-item h6 {
+        font-size: 15px;
+        font-weight: 700;
+        margin-bottom: 0px;
+    }
+    .h2-container {
+        background-color: rgba(255, 255, 255, 0.8);
+        /* 表单容器的透明背景 */
+        padding: 10px;
+        text-align: left;
+        border-radius: 8px;
+        box-shadow: 0px 0px 10px 0px rgba(0, 0, 0, 0.75);
+        display: inline-block;
+        /* max-width: 85%; */
+        
+    }
+
+    @media (max-width: 768px) {
+        .image-container {
+            flex-direction: column;
+            /* 列表布局 */
+        }
+        .one-container {
+            flex-direction: column;
+            /* 列表布局 */
+        }
+        .oneitem{
+            width: 100%;
+            
+        }
+
+        .item {
+            width: 100%;
+            
+        }
+    
+    }
+</style>
+
+{% block content %}
+
+
+    <div class="one-container">
+        {% for id, image_url , name , color , type in one_zip %}
+        <div class="oneitem">
+            <div class="featured-item" data-item-id="{{ id }}">
+                <img src="{{ image_url }}" alt="">
+                <h4 style="text-align: left;">商品名稱 : {{ name }}</h4>
+                <h6 style="text-align: left;"> 類型: {{ type }}</h6>
+                <h6 style="text-align: left;"> 顏色: {{ color }}</h6>
+            </div>
+        </div>
+        {% endfor %}
+    </div>
+    <h1 style="margin: 10px auto 0 auto;">推薦商品</h1>
+    <div class="image-container">
+        {% for id, image_url , name , color , type in five_zip %}
+        <div class="item">
+            <div class="featured-item" data-item-id="{{ id }}">
+                <img src="{{ image_url }}" alt="">
+                <h4 style="text-align: left;">商品名稱 : {{ name }}</h4>
+                <h6 style="text-align: left;"> 類型: {{ type }}</h6>
+                <h6 style="text-align: left;"> 顏色: {{ color }}</h6>
+                <button type="button" class="btn btn-secondary btn-sm" style="margin-top: 15px;"
+                    onclick="sendId('{{ id }}')">商品推薦</button>
+                <button type="button" class="btn btn-secondary btn-sm" style="margin-top: 15px;"
+                    onclick="myfavorite('{{ id }}','{{ name }}', '{{ color }}', '{{ type }}')">加入購物車</button>
+            </div>
+        </div>
+        {% endfor %}
+    </div>
+
+    <h1 style="margin: 0 auto;">個人化推薦</h1>
+    {% if current_user.is_authenticated %}
+    <div class="image-container">
+        {% for id, image_url , name , color , type in zip_recommand %}
+        <div class="item">
+            <div class="featured-item" data-item-id="{{ id }}">
+                <img src="{{ image_url }}" alt="">
+                <h4 style="text-align: left;">商品名稱 : {{ name }}</h4>
+                <h6 style="text-align: left;"> 類型: {{ type }}</h6>
+                <h6 style="text-align: left;"> 顏色: {{ color }}</h6>
+                <button type="button" class="btn btn-secondary btn-sm" style="margin-top: 15px;"
+                    onclick="sendId('{{ id }}')">商品推薦</button>
+                <button type="button" class="btn btn-secondary btn-sm" style="margin-top: 15px;"
+                    onclick="myfavorite('{{ id }}','{{ name }}', '{{ color }}', '{{ type }}')">加入購物車</button>
+            </div>
+        </div>
+        {% endfor %}
+    </div>
+    {% else %}
+    <div style="margin: 10px auto;">
+    <h2 class="h2-container">請先 <a href="{{url_for('login')}}">登入系統</a> 或 <a href="{{url_for('register')}}">註冊帳號</a></h2>
+    </div>
+    {% endif %}
+
+{% endblock content %}
+
+{% include "parts/footer.html" %}
+

@@ -1,0 +1,36 @@
+{% include "parts/navbar.html" %}
+<html>
+<style>
+    /* 樣式可以根據需要自行調整 */
+    .item {
+        display: inline-block;
+        margin: 10px;
+    }
+</style>
+<head>
+    <title>我的最愛</title>
+</head>
+<body>
+    <h1>我的最愛</h1>
+    
+    <h2>最愛列表</h2>
+    <div class="item">
+        {% for favorite , image_url ,prod , grap in zip_favor %}
+            <img src="{{ image_url }}" alt="{{ favorite.item_id }}">
+            <h4 style="text-align: left;">商品名稱 : {{ prod }}</h4>
+            <h6 style="text-align: left;"> 外觀 : {{ grap}}</h6>
+        {% endfor %}
+    </div>
+    
+    <h2>推薦商品</h2>
+    <div class="item">
+        {% for recommandation , url, prod, grap in zip_recommand %}
+            <img src="{{ url }}" alt="{{ recommandation }}">
+            <h4 style="text-align: left;">商品名稱 : {{ prod }}</h4>
+            <h6 style="text-align: left;"> 外觀 : {{ grap}}</h6>
+        {% endfor %}
+    </div>
+</body>
+</html>
+
+{% include "parts/footer.html" %}

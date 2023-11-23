@@ -1,0 +1,86 @@
+{% extends "parts/base.html" %}
+
+
+
+{% block content %}
+        <div class="ispan-container">
+            <img src="../static/html_img/ispan_logo.png" alt="" class="ispan">
+        </div>
+        <div class="banner"></div>
+        <label></label>
+
+    <div class="d-flex justify-content-between align-items-center">
+       
+        <!-- 設定第一個有關age的block,id="age_block"用於小螢幕觀看時可以用於影藏 -->
+            <div class="input-group input-group-lg" style="margin-left: 10px;" id="age_block">
+                <span class="input-group-text" id="inputGroup-sizing-lg">Age</span>
+                <input type="number" class="form-control" aria-label="Sizing example input" id="age_input" step="1"
+                    placeholder="輸入後請按Enter">
+            </div>
+        <!-- 設定第二個有關age的select,id="ageSelect"用於小螢幕觀看時可以用於顯現 -->
+            <select class="form-select form-select-lg mb-3" aria-label=".form-select-lg example" id="ageSelect" style=" margin-left: 10px;">
+                <option value="" selected>年齡</option>
+                {% for age in range(16,100) %}
+                <option value="{{age}}">{{age}}歲</option>
+                {% endfor %}
+            </select>
+
+
+            <select class="form-select form-select-lg mb-3" aria-label=".form-select-lg example" id="indexMenu" style=" margin-left: 10px;">
+                <option value="">服飾類別</option>
+            </select>
+
+            <select class="form-select form-select-lg mb-3" aria-label=".form-select-lg example" id="groupMenu" style="margin-left: 10px;">
+                <option value="">服飾類型</option>
+            </select>
+
+            <select class="form-select form-select-lg mb-3" aria-label=".form-select-lg example" id="typeMenu" style="margin-left: 10px;">
+                <option value="" >服飾樣式</option>
+            </select>
+
+            <div class="input-group input-group-lg" style="margin: auto 10px;" id="color_block">
+                <span class="input-group-text" id="inputGroup-sizing-lg">Color</span>
+                <input type="text" class="form-control" aria-label="Sizing example input" id="color_input"
+                    placeholder="輸入後請按Enter">
+            </div>
+
+             <!-- 設定第二個有關color的select,將id="colorSelect"用於小螢幕觀看時可以用於顯現 -->
+             <select class="form-select form-select-lg mb-3" aria-label=".form-select-lg example" id="colorSelect" style=" margin-left: 10px;">
+                <option value="" selected>商品顏色</option>
+            </select> 
+
+    </div>
+
+
+        <div class="image-container" >
+            {% for id, name ,color ,type  ,url in zip_top10 %}
+            <div class="item">
+                <div class="featured-item" data-item-id="{{ id }}">
+                    <img src="{{ url }}" alt="">
+                    <h4> 商品名稱 : {{ name }}</h4>
+                    <h6> 顏色 : {{ color}}</h6>
+                    <h6> 商品類型 : {{ type }}</h6>
+                    <button type="button" class="btn btn-secondary btn-sm" style="margin-top: 15px;"
+                        onclick="sendId('{{ id }}')">商品推薦</button>
+                    <button type="button" class="btn btn-secondary btn-sm" style="margin-top: 15px;"
+                        onclick=" myfavorite('{{ id }}','{{ name }}', '{{ color }}', '{{ type }}')">加入購物車</button>
+                       
+                </div>
+            </div>
+            {% endfor %}
+        </div>
+
+        
+
+       
+{% include "parts/carousel.html" %}
+{% include "parts/footer.html" %}
+
+
+
+{% endblock content %}
+
+
+    
+
+

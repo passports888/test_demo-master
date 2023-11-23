@@ -1,0 +1,96 @@
+{% block carousel %}
+<style>
+    .featured-items {
+        margin-bottom: 70px;
+    }
+
+    .featured-item {
+        border-radius: 10px;
+        border: 5px solid #eee;
+        padding: 20px;
+        transition: all 0.5s;
+    }
+
+    .featured-item:hover {
+        opacity: 0.9;
+    }
+
+    .featured-item img {
+        width: 100%;
+    }
+
+    .featured-item h4 {
+        font-family:'Times New Roman', Times, serif;
+        font-size: 17px;
+        font-weight: 700;
+        color: #1e1e1e;
+        margin-top: 15px;
+        transition: all 0.5s;
+        text-align: left;
+    }
+
+    .featured-item:hover h4 {
+        color:#3a8bcd;
+    }
+
+    .featured-item h6 {
+        color: black;
+        font-size: 15px;
+        font-weight: 700;
+        margin-top: 10px;
+        margin-bottom: 0px;
+        text-align: left;
+    }
+
+    .owl-theme .owl-dots {
+        text-align: center;
+        margin-top: 30px;
+    }
+
+    .owl-theme .owl-dots .owl-dot {
+        outline: none;
+    }
+
+    .owl-theme .owl-dots .active span {
+        background-color: #3a8bcd !important;
+    }
+
+    .owl-theme .owl-dots .owl-dot span {
+        background-color: #aaa;
+        width: 8px;
+        height: 8px;
+        display: inline-block;
+        margin: 0px 5px;
+        outline: none;
+    }
+</style>
+
+<div class="featured-items">
+    <div class="container">
+        <div class="row">
+            <div class="col-md-12">
+                <div class="section-heading">
+                    <div class="line-dec"></div>
+                    <h1>Product Items</h1>
+                </div>
+            </div>
+            <div class="col-md-12">
+                <div class="owl-carousel owl-theme">
+                    {% for id, url, name , color , type in base_data %}
+                    <div class="featured-item" data-item-id="{{id}}">
+                        <img src="{{url}}" alt="{{id}}">
+                        <h4> 商品名稱 : {{ name }}</h4>
+                        <h6> 顏色 : {{ color}}</h6>
+                        <h6> 商品類型 : {{ type }}</h6>
+                        <button type="button" class="btn btn-secondary btn-sm" style="margin-top: 15px;"
+                            onclick="sendId('{{ id }}')">商品推薦</button>
+                        <button type="button" class="btn btn-secondary btn-sm" style="margin-top: 15px;"
+                            onclick="myfavorite('{{ id }}','{{ name }}', '{{ color }}', '{{ type }}')">加入購物車</button>
+                    </div>
+                    {% endfor %}
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock carousel %}
